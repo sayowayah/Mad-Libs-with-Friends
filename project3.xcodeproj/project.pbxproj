@@ -37,20 +37,20 @@
 		1587A21115463951006BB3D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1587A21315463951006BB3D8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1587A21515463951006BB3D8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		1587A21915463951006BB3D8 /* project3-Info.plist */ = {isa = PBXFileReference; path = "project3-Info.plist"; sourceTree = "<group>"; };
+		1587A21915463951006BB3D8 /* project3-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "project3-Info.plist"; sourceTree = "<group>"; };
 		1587A21B15463951006BB3D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1587A21D15463951006BB3D8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1587A21F15463951006BB3D8 /* project3-Prefix.pch */ = {isa = PBXFileReference; path = "project3-Prefix.pch"; sourceTree = "<group>"; };
-		1587A22015463951006BB3D8 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		1587A21F15463951006BB3D8 /* project3-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "project3-Prefix.pch"; sourceTree = "<group>"; };
+		1587A22015463951006BB3D8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1587A22115463951006BB3D8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		1587A22315463951006BB3D8 /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		1587A22315463951006BB3D8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		1587A22415463951006BB3D8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		1587A22715463951006BB3D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		1587A22E15463952006BB3D8 /* project3Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = project3Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1587A22F15463952006BB3D8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		1587A23715463952006BB3D8 /* project3Tests-Info.plist */ = {isa = PBXFileReference; path = "project3Tests-Info.plist"; sourceTree = "<group>"; };
+		1587A23715463952006BB3D8 /* project3Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "project3Tests-Info.plist"; sourceTree = "<group>"; };
 		1587A23915463952006BB3D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1587A23B15463952006BB3D8 /* project3Tests.h */ = {isa = PBXFileReference; path = project3Tests.h; sourceTree = "<group>"; };
+		1587A23B15463952006BB3D8 /* project3Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project3Tests.h; sourceTree = "<group>"; };
 		1587A23C15463952006BB3D8 /* project3Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = project3Tests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
