@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "TemplateViewController.h"
+#import "FormViewController.h"
 
 @interface ViewController ()
 
@@ -33,9 +34,12 @@
 
 - (IBAction)startGame:(id)sender {
 
-  
+  // TODO: Link instead to FB friends when implemented
+  /*
+   FormViewController *controller = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
+   */
   TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
-  //  controller.delegate = self;
+
   
   // create new navigation stack on the template view controller
   UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
