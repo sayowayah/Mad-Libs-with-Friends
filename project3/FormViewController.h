@@ -10,4 +10,6 @@
 
 @interface FormViewController : UIViewController
 
+@property (strong, nonatomic) NSArray *templateBlanks;
+
 @end

@@ -14,8 +14,9 @@
 
 @implementation FormViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+@synthesize templateBlanks = _templateBlanks;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
     // Custom initialization
@@ -23,26 +24,41 @@
   return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
   [super viewDidLoad];
-
+  
   self.title = @"Enter words";
   
-  // TODO: get array of blank words from web service
-  // TODO: iterate through array and create row for each blank word
-  UITextField *wordInput = [[UITextField alloc] initWithFrame:CGRectMake(120, 15, 150, 40)];
-  wordInput.borderStyle = UITextBorderStyleRoundedRect;
-  [self.view addSubview:wordInput];
+  // iterate through array of blank words and create row for each blank word
+  int i=0;
+  for (NSDictionary *blanks in self.templateBlanks) {
+    
+    UITextField *wordInput = [[UITextField alloc] initWithFrame:CGRectMake(150, 15 + (i*40), 120, 30)];
+    wordInput.borderStyle = UITextBorderStyleRoundedRect;
+    [wordInput setTag:[[blanks objectForKey:@"Word_ID"] intValue]];
+    [self.view addSubview:wordInput];
+    
+    
+    UILabel *partOfSpeech = [[UILabel alloc] initWithFrame:CGRectMake(15, 15 + (i*40), 110, 30)];
+    [partOfSpeech setText:[blanks objectForKey:@"PartOfSpeech"]];
+    [self.view addSubview:partOfSpeech];
+    
+    i++;
+  }
+
+  UIButton *submit = [[UIButton alloc] initWithFrame:CGRectMake(100, 30 + (i*40), 120, 50)];
+  [submit setBackgroundColor:[UIColor blueColor]];
+  [submit setTitle:@"Submit" forState:UIControlStateNormal];
   
-  UILabel *partOfSpeech = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 80, 40)];
-  partOfSpeech.text = @"noun";
-  [self.view addSubview:partOfSpeech];
+  // TODO: add in submit functionality sending tags of input fields to the server
+  //  [submit addTarget:self action:@selector(test) forControlEvents:UIControlEventTouchUpInside];
+  
+  [self.view addSubview:submit];
   
 }
 
-- (void)viewDidUnload
-{
+
+- (void)viewDidUnload {
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;

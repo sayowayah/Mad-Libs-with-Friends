@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
 
 #import "ViewController.h"
 #import "TemplateViewController.h"
@@ -15,6 +14,72 @@
 @interface ViewController ()
 
 @end
+
+// extend NSDictionary class with JSON decoding and encoding functionality
+
+@interface NSDictionary(JSONCategories)
++(NSDictionary*)dictionaryWithContentsOfJSONURLString:
+(NSString*)urlAddress;
+-(NSData*)toJSON;
+@end
+
+@implementation NSDictionary(JSONCategories)
++(NSDictionary*)dictionaryWithContentsOfJSONURLString:
+(NSString*)urlAddress
+{
+  NSData* data = [NSData dataWithContentsOfURL:
+                  [NSURL URLWithString: urlAddress] ];
+  __autoreleasing NSError* error = nil;
+  id result = [NSJSONSerialization JSONObjectWithData:data 
+                                              options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  return result;
+}
+
+-(NSData*)toJSON
+{
+  NSError* error = nil;
+  id result = [NSJSONSerialization dataWithJSONObject:self 
+                                              options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  return result;    
+}
+@end
+
+// extend NSArray class with JSON decoding and encoding functionality
+
+@interface NSArray(JSONCategories)
++(NSArray*)arrayWithContentsOfJSONURLString:
+(NSString*)urlAddress;
+-(NSData*)toJSON;
+@end
+
+@implementation NSArray(JSONCategories)
++(NSArray*)arrayWithContentsOfJSONURLString:
+(NSString*)urlAddress
+{
+  NSData* data = [NSData dataWithContentsOfURL:
+                  [NSURL URLWithString: urlAddress] ];
+  
+  
+  __autoreleasing NSError* error = nil;
+  id result = [NSJSONSerialization JSONObjectWithData:data 
+                                              options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  return result;
+}
+
+-(NSData*)toJSON
+{
+  NSError* error = nil;
+  id result = [NSJSONSerialization dataWithJSONObject:self 
+                                              options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  return result;    
+}
+@end
+
+
 
 @implementation ViewController
 
@@ -46,38 +111,16 @@
 - (IBAction)startGame:(id)sender {
   
   // TODO: Link instead to FB friends when implemented
-  /*
-   FormViewController *controller = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
-   
-*/  
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getStoryTemplates"]];
-  NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-  //NSString *get = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
-  //NSLog(get);
 
-  NSError* error;
-  NSArray* templates = [NSJSONSerialization JSONObjectWithData:response options:0 error:&error];
+  // get NSArray of templates from JSON API call
+  NSArray* templates = [NSArray arrayWithContentsOfJSONURLString:@"http://six6.ca/friendlibs_api/index.php/main/getStoryTemplates"];
   
-    NSLog(@"templates: %@", templates); //3
-  
-
   [self.navigationController setNavigationBarHidden:NO animated:YES];
   TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
   controller.templates = templates;
   [self.navigationController pushViewController:controller animated:YES];
   
 }
-
-- (void)fetchedData:(NSData *)responseData {
-  //parse out the json data
-  NSError* error;
-  NSArray* json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
-  
-  NSDictionary* templates = [json objectAtIndex:0]; //2
-  
-  NSLog(@"templates: %@", templates); //3
-}
-
 
 
 - (int)numberOfSectionsInTableView:(UITableView *)tableView
@@ -90,8 +133,7 @@
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   
-  // TODO: call webservice API to get number of array of outstanding stories
-  // TODO: return number of outstanding stories
+  // TODO: call webservice API to get number of array of outstanding stories then return this number
   return 2;
 }
 
@@ -102,9 +144,7 @@
       
     case 1:
       return @"Their Turn";
-      
-      //    default:
-      //break;
+
   }
   return nil;
 }

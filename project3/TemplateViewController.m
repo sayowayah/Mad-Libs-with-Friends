@@ -16,6 +16,7 @@
 @implementation TemplateViewController
 
 @synthesize templates = _templates;
+@synthesize templateBlanks = _templateBlanks;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -118,9 +119,56 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   // Navigation logic may go here. Create and push another view controller.
+  NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getBlanksForStory"];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
   
+  NSData *requestData = [@"userId=1&storyId=3" dataUsingEncoding:NSUTF8StringEncoding];
+  
+  [request setHTTPMethod:@"POST"];
+  [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+  [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+  [request setHTTPBody: requestData];
+  
+  [[NSURLConnection alloc] initWithRequest:request delegate:self];
+
+  /*
+  __autoreleasing NSError* error = nil;
+  id result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  //  return result;  
+  */
+  
+  
+  
+  
+
+  
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+  //    NSData *results = data;
+  //    NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+  //NSLog(ReturnStr);
+
+  NSMutableArray *templateBlanks = [[NSMutableArray alloc] init];
+  __autoreleasing NSError* error = nil;
+  
+  // TODO: check backend of getTemplateBlanks for unterminated strings
+
+  templateBlanks = [NSJSONSerialization JSONObjectWithData:data 
+                                              options:NSJSONReadingMutableContainers error:&error];
+  if (templateBlanks == nil) {
+    NSLog(@"error: %@", error);
+  }
+  else {
+    NSLog(@"nothing wrong");
+  }
+  
+
+
   FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
-  
+  formViewController.templateBlanks = templateBlanks;
   // Pass the selected object to the new view controller.
   [self.navigationController pushViewController:formViewController animated:YES];
   

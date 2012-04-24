@@ -11,5 +11,6 @@
 @interface TemplateViewController : UITableViewController
 
 @property (strong, nonatomic) NSArray *templates;
+@property (strong, nonatomic) NSMutableArray *templateBlanks;
 
 @end
