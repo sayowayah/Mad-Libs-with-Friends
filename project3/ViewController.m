@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "TemplateViewController.h"
 
 @interface ViewController ()
 
@@ -14,21 +15,87 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+@synthesize tableView = _tableView;
+
+- (void)viewDidLoad {
+  [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+- (void)viewDidUnload {
+  [super viewDidUnload];
+  // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
+
+- (IBAction)startGame:(id)sender {
+
+  
+  TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
+  //  controller.delegate = self;
+  
+  // create new navigation stack on the template view controller
+  UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+  navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+  [self presentModalViewController:navController animated:YES];
+  
+  //  [self.navigationController pushViewController:controller animated:YES];
+  
+}
+
+
+- (int)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  // Two groups of on-going games: "Your Turn" and "Their Turn"
+  return 2;
+}
+
+
+- (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+
+  // TODO: call webservice API to get number of array of outstanding stories
+  // TODO: return number of outstanding stories
+  return 2;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+  switch (section) {      
+    case 0:
+      return @"Your Turn";
+
+    case 1:
+      return @"Their Turn";
+      
+      //    default:
+      //break;
+  }
+  return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  // identifier that allows cell to be pulled from cache
+  static NSString *CellIdentifier = @"Cell";
+  
+  // try to get cell from cache
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+  
+  // no cell in cache, so allocate a new cell
+  if (cell == nil) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+  }
+  
+  // TODO: get name of story and opposing player
+  //  cell.textLabel.text = [self.tfs objectAtIndex:indexPath.row];
+  cell.textLabel.text = @"Hello!";
+  return cell;
+}
+
+
+
 
 @end

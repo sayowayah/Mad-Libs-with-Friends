@@ -10,4 +10,8 @@
 
 @interface ViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+
+- (IBAction)startGame:(id)sender;
+
 @end

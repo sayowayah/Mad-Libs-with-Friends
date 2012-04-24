@@ -20,6 +20,8 @@
 		1587A23215463952006BB3D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21315463951006BB3D8 /* Foundation.framework */; };
 		1587A23A15463952006BB3D8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1587A23815463952006BB3D8 /* InfoPlist.strings */; };
 		1587A23D15463952006BB3D8 /* project3Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587A23C15463952006BB3D8 /* project3Tests.m */; };
+		1587A25515464888006BB3D8 /* TemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587A25315464888006BB3D8 /* TemplateViewController.m */; };
+		1587A25615464888006BB3D8 /* TemplateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1587A25415464888006BB3D8 /* TemplateViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,9 @@
 		1587A23915463952006BB3D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1587A23B15463952006BB3D8 /* project3Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project3Tests.h; sourceTree = "<group>"; };
 		1587A23C15463952006BB3D8 /* project3Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = project3Tests.m; sourceTree = "<group>"; };
+		1587A25215464888006BB3D8 /* TemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateViewController.h; sourceTree = "<group>"; };
+		1587A25315464888006BB3D8 /* TemplateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateViewController.m; sourceTree = "<group>"; };
+		1587A25415464888006BB3D8 /* TemplateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TemplateViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +118,9 @@
 			children = (
 				1587A22015463951006BB3D8 /* AppDelegate.h */,
 				1587A22115463951006BB3D8 /* AppDelegate.m */,
+				1587A25215464888006BB3D8 /* TemplateViewController.h */,
+				1587A25315464888006BB3D8 /* TemplateViewController.m */,
+				1587A25415464888006BB3D8 /* TemplateViewController.xib */,
 				1587A22315463951006BB3D8 /* ViewController.h */,
 				1587A22415463951006BB3D8 /* ViewController.m */,
 				1587A22615463951006BB3D8 /* ViewController.xib */,
@@ -223,6 +231,7 @@
 			files = (
 				1587A21C15463951006BB3D8 /* InfoPlist.strings in Resources */,
 				1587A22815463951006BB3D8 /* ViewController.xib in Resources */,
+				1587A25615464888006BB3D8 /* TemplateViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +269,7 @@
 				1587A21E15463951006BB3D8 /* main.m in Sources */,
 				1587A22215463951006BB3D8 /* AppDelegate.m in Sources */,
 				1587A22515463951006BB3D8 /* ViewController.m in Sources */,
+				1587A25515464888006BB3D8 /* TemplateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
