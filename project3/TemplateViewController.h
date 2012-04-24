@@ -10,4 +10,6 @@
 
 @interface TemplateViewController : UITableViewController
 
+@property (strong, nonatomic) NSArray *templates;
+
 @end

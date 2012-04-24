@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
+
 #import "ViewController.h"
 #import "TemplateViewController.h"
 #import "FormViewController.h"
@@ -42,25 +44,40 @@
 }
 
 - (IBAction)startGame:(id)sender {
-
+  
   // TODO: Link instead to FB friends when implemented
   /*
    FormViewController *controller = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
-   */
-  
-         [self.navigationController setNavigationBarHidden:NO animated:YES];
-  TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
-  [self.navigationController pushViewController:controller animated:YES];
+   
+*/  
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getStoryTemplates"]];
+  NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+  //NSString *get = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+  //NSLog(get);
 
-/*  
-  // create new navigation stack on the template view controller
-  UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-  navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-  [self presentModalViewController:navController animated:YES];
-  */
-  //  [self.navigationController pushViewController:controller animated:YES];
+  NSError* error;
+  NSArray* templates = [NSJSONSerialization JSONObjectWithData:response options:0 error:&error];
+  
+    NSLog(@"templates: %@", templates); //3
+  
+
+  [self.navigationController setNavigationBarHidden:NO animated:YES];
+  TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
+  controller.templates = templates;
+  [self.navigationController pushViewController:controller animated:YES];
   
 }
+
+- (void)fetchedData:(NSData *)responseData {
+  //parse out the json data
+  NSError* error;
+  NSArray* json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+  
+  NSDictionary* templates = [json objectAtIndex:0]; //2
+  
+  NSLog(@"templates: %@", templates); //3
+}
+
 
 
 - (int)numberOfSectionsInTableView:(UITableView *)tableView
@@ -72,7 +89,7 @@
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
+  
   // TODO: call webservice API to get number of array of outstanding stories
   // TODO: return number of outstanding stories
   return 2;
@@ -82,7 +99,7 @@
   switch (section) {      
     case 0:
       return @"Your Turn";
-
+      
     case 1:
       return @"Their Turn";
       
