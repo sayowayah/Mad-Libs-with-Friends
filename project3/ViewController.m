@@ -20,6 +20,8 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  // hide the navigation bar upon load
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -27,6 +29,13 @@
   [super viewDidUnload];
   // Release any retained subviews of the main view.
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+  // hide the navigation bar if user presses back from next screen
+  [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
@@ -38,14 +47,17 @@
   /*
    FormViewController *controller = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
    */
-  TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
-
   
+         [self.navigationController setNavigationBarHidden:NO animated:YES];
+  TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
+  [self.navigationController pushViewController:controller animated:YES];
+
+/*  
   // create new navigation stack on the template view controller
   UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
   navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
   [self presentModalViewController:navController animated:YES];
-  
+  */
   //  [self.navigationController pushViewController:controller animated:YES];
   
 }
