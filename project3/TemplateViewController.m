@@ -119,10 +119,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   // Navigation logic may go here. Create and push another view controller.
-  NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getBlanksForStory"];
+  NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getTemplateBlanks"];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
   
-  NSData *requestData = [@"userId=1&storyId=3" dataUsingEncoding:NSUTF8StringEncoding];
+  NSData *requestData = [@"templateId=1" dataUsingEncoding:NSUTF8StringEncoding];
   
   [request setHTTPMethod:@"POST"];
   [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
@@ -140,10 +140,6 @@
   */
   
   
-  
-  
-
-  
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -152,7 +148,7 @@
   //NSLog(ReturnStr);
 
   NSMutableArray *templateBlanks = [[NSMutableArray alloc] init];
-  __autoreleasing NSError* error = nil;
+  NSError* error = nil;
   
   // TODO: check backend of getTemplateBlanks for unterminated strings
 
