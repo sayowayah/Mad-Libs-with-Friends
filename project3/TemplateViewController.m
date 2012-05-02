@@ -130,7 +130,7 @@
   [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
   [request setHTTPBody: requestData];
   
-  [[NSURLConnection alloc] initWithRequest:request delegate:self];
+  (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
   /*
   __autoreleasing NSError* error = nil;
