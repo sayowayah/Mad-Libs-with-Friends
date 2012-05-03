@@ -42,6 +42,7 @@
 {
   [super setUp];
   
+  // TODO why won't this work???
   self.appDelegate = [[UIApplication sharedApplication] delegate];
   self.viewController = self.appDelegate.viewController;
   self.view = self.viewController.view;
@@ -137,11 +138,11 @@
   
 }
 
-
-//@interface project3Tests ()
-
-
-
+- (void)testTableView
+{
+  // simulate touching the tableview
+  //[self.viewController.tableView:[self.view viewWithTag:3]];
+}
 
 
 
