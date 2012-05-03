@@ -8,6 +8,7 @@
 
 #import "FormViewController.h"
 #import "GameSingleton.h"
+#import "StoryViewController.h"
 
 @interface FormViewController ()
 
@@ -97,7 +98,9 @@
   
   // TODO: delete after testing
   //int player = 1;
-
+  gameSingleton.playerNumber = 2;
+  
+  
   // if player 1, create story instance first before submitting words
   if (gameSingleton.playerNumber == 1) {
     NSLog(@"Creating story instance");
@@ -230,7 +233,7 @@
     [self submitWords:self];
   }
   // proceed with game after words are submitted
-  else {
+  else if (self.connectionRequest == 2) {
     // if player 1, go back to ViewController
     NSLog(@"Checking player number");
     if (gameSingleton.playerNumber == 1) {
@@ -238,24 +241,44 @@
       [self.navigationController popToRootViewControllerAnimated:YES];      
     }
     else {
-    // if player 2, show completed story
+    // TODO: if player 2, load completed story
+      [self loadCompletedStory:self];
     }
-
-    
-
-    
-
-    
-    /*
-     FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
-     formViewController.templateBlanks = templateBlanks;
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:formViewController animated:YES];
-     */  
   }
+  else {
+    // TODO: load new screen with completed story
+    // TESTING
+    NSString *returnString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    NSLog(returnString);
+    StoryViewController *storyViewController = [[StoryViewController alloc] initWithNibName:@"StoryViewController" bundle:nil];
+    storyViewController.completedStoryText = returnString;
+    [self.navigationController pushViewController:storyViewController animated:YES];
+  } 
   
 }
 
+- (void) loadCompletedStory:(id)sender {
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  self.connectionRequest = 3;
+  //  NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=%d",gameSingleton.storyId];
+  
+  //TESTING: delete below when done
+    NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=7"];
+  
+  NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
+  
+  NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getCompletedStory"];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+  
+  [request setHTTPMethod:@"POST"];
+  [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+  [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+  [request setHTTPBody: requestData];
+  
+  (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
+  
+}
 
 
 - (void)viewDidUnload {

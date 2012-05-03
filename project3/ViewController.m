@@ -203,8 +203,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  // TODO: load game, remember to set gameSingleton.playerNumber = 2
-  // TODO: figure out what to do when user clicks on game that's on their turn
+  if (indexPath.section == 1){
+  // TODO: load game, remember to set gameSingleton.playerNumber = 2    
+  }
+  else {
+  // TODO: figure out what to do when user clicks on game that's on their turn    
+  }
+
 }
 
 

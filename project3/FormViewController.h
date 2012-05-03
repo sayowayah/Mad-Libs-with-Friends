@@ -19,5 +19,6 @@
 - (IBAction)submit:(id)sender;
 - (IBAction)hideKeyboard:(id)sender;
 - (void) submitWords:(id)sender;
+- (void) loadCompletedStory:(id)sender;
 
 @end
