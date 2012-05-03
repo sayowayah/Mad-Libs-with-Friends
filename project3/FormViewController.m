@@ -246,10 +246,8 @@
     }
   }
   else {
-    // TODO: load new screen with completed story
-    // TESTING
+    // load new screen with completed story
     NSString *returnString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-    NSLog(returnString);
     StoryViewController *storyViewController = [[StoryViewController alloc] initWithNibName:@"StoryViewController" bundle:nil];
     storyViewController.completedStoryText = returnString;
     [self.navigationController pushViewController:storyViewController animated:YES];

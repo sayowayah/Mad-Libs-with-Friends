@@ -11,76 +11,11 @@
 #import "TemplateViewController.h"
 #import "FormViewController.h"
 #import "GameSingleton.h"
+#import "FriendsViewController.h"
 
 @interface ViewController ()
 
 @end
-
-// extend NSDictionary class with JSON decoding and encoding functionality
-
-@interface NSDictionary(JSONCategories)
-+(NSDictionary*)dictionaryWithContentsOfJSONURLString:
-(NSString*)urlAddress;
--(NSData*)toJSON;
-@end
-
-@implementation NSDictionary(JSONCategories)
-+(NSDictionary*)dictionaryWithContentsOfJSONURLString:
-(NSString*)urlAddress
-{
-  NSData* data = [NSData dataWithContentsOfURL:
-                  [NSURL URLWithString: urlAddress] ];
-  __autoreleasing NSError* error = nil;
-  id result = [NSJSONSerialization JSONObjectWithData:data 
-                                              options:kNilOptions error:&error];
-  if (error != nil) return nil;
-  return result;
-}
-
--(NSData*)toJSON
-{
-  NSError* error = nil;
-  id result = [NSJSONSerialization dataWithJSONObject:self 
-                                              options:kNilOptions error:&error];
-  if (error != nil) return nil;
-  return result;    
-}
-@end
-
-// extend NSArray class with JSON decoding and encoding functionality
-
-@interface NSArray(JSONCategories)
-+(NSArray*)arrayWithContentsOfJSONURLString:
-(NSString*)urlAddress;
--(NSData*)toJSON;
-@end
-
-@implementation NSArray(JSONCategories)
-+(NSArray*)arrayWithContentsOfJSONURLString:
-(NSString*)urlAddress
-{
-  NSData* data = [NSData dataWithContentsOfURL:
-                  [NSURL URLWithString: urlAddress] ];
-  
-  
-  __autoreleasing NSError* error = nil;
-  id result = [NSJSONSerialization JSONObjectWithData:data 
-                                              options:kNilOptions error:&error];
-  if (error != nil) return nil;
-  return result;
-}
-
--(NSData*)toJSON
-{
-  NSError* error = nil;
-  id result = [NSJSONSerialization dataWithJSONObject:self 
-                                              options:kNilOptions error:&error];
-  if (error != nil) return nil;
-  return result;    
-}
-@end
-
-
 
 @implementation ViewController
 
@@ -115,18 +50,11 @@
   // set player number global variable to 1
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   gameSingleton.playerNumber = 1;
-  
-  // TODO: Link instead to FB friends when implemented
-  // TODO: set opponentId after FB friend is chosen
-  gameSingleton.opponentId = 2;
 
-  // get NSArray of templates from JSON API call
-  NSArray* templates = [NSArray arrayWithContentsOfJSONURLString:@"http://six6.ca/friendlibs_api/index.php/main/getStoryTemplates"];
-  
   [self.navigationController setNavigationBarHidden:NO animated:YES];
-  TemplateViewController *controller = [[TemplateViewController alloc] initWithNibName:@"TemplateViewController" bundle:nil];
-  controller.templates = templates;
+  FriendsViewController *controller = [[FriendsViewController alloc] initWithNibName:@"FriendsViewController" bundle:nil];
   [self.navigationController pushViewController:controller animated:YES];
+
   
 }
 
