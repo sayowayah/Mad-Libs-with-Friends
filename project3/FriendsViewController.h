@@ -10,4 +10,6 @@
 
 @interface FriendsViewController : UITableViewController
 
+@property (strong, nonatomic) NSArray *friendData;
+
 @end
