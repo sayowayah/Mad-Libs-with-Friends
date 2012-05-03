@@ -8,40 +8,63 @@
 
 #import "project3Tests.h"
 #import "GameSingleton.h"
+#import "AppDelegate.h"
+#import "ViewController.h"
+#import "FriendsViewController.h"
+#import "TemplateViewController.h"
+#import "FormViewController.h"
+#import "StoryViewController.h"
+
+@interface project3Tests ()
+
+@property (nonatomic, readwrite, weak) AppDelegate *appDelegate;
+@property (nonatomic, readwrite, weak) ViewController *viewController;
+@property (nonatomic, readwrite, weak) FriendsViewController *friendsViewController;
+@property (nonatomic, readwrite, weak) TemplateViewController *templateViewController;
+@property (nonatomic, readwrite, weak) FormViewController *formViewController;
+@property (nonatomic, readwrite, weak) StoryViewController *storyViewController;
+@property (nonatomic, readwrite, weak) UIView *view;
+
+@end
+
 
 @implementation project3Tests
 
+@synthesize appDelegate = _appDelegate;
+@synthesize viewController = _viewController;
+@synthesize friendsViewController = _friendsViewController;
+@synthesize templateViewController = _templateViewController;
+@synthesize formViewController = _formViewController;
+@synthesize storyViewController = _storyViewController;
+@synthesize view = _view;
+
 - (void)setUp
 {
-    [super setUp];
-    
-    // Set-up code here.
+  [super setUp];
+  
+  // TODO why won't this work???
+  self.appDelegate = [[UIApplication sharedApplication] delegate];
+  self.viewController = self.appDelegate.viewController;
+  self.view = self.viewController.view;
 }
 
-- (void)tearDown
-{
-    // Tear-down code here.
-    
-    [super tearDown];
-}
-
-
+/***LOGIC TESTS***/
 // upon initialization, all values should be 0
 -(void)testGameSingleton_init
 {  
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   
   // playerNumber should be 0 
-  STAssertTrue(gameSingleton.playerNumber == 0, @"playerNumber set to 0");
+  STAssertTrue(gameSingleton.playerNumber == 0, @"playerNumber should be set to 0");
   
   // templateId should be 0 
-  STAssertTrue(gameSingleton.templateId == 0, @"templateId set to 0");
+  STAssertTrue(gameSingleton.templateId == 0, @"templateId should be set to 0");
   
   // storyId should be 0 
-  STAssertTrue(gameSingleton.storyId == 0, @"storyId set to 0");
+  STAssertTrue(gameSingleton.storyId == 0, @"storyId should be set to 0");
   
   // opponentId should be 0 
-  STAssertTrue(gameSingleton.opponentId == 0, @"opponentId set to 0");
+  STAssertTrue(gameSingleton.opponentId == 0, @"opponentId should be set to 0");
 }
 
 
@@ -56,16 +79,16 @@
   gameSingleton.opponentId = 4;
   
   // playerNumber should be 1 
-  STAssertTrue(gameSingleton.playerNumber == 1, @"playerNumber set correctly");
+  STAssertTrue(gameSingleton.playerNumber == 1, @"playerNumber isn't set correctly");
   
   // templateId should be 2
-  STAssertTrue(gameSingleton.templateId == 2, @"templateId set correctly");
+  STAssertTrue(gameSingleton.templateId == 2, @"templateId isn't set correctly");
   
   // storyId should be 3
-  STAssertTrue(gameSingleton.storyId == 3, @"storyId set correctly");
+  STAssertTrue(gameSingleton.storyId == 3, @"storyId isn't set correctly");
   
   // opponentId should be 4 
-  STAssertTrue(gameSingleton.opponentId == 4, @"opponentId set correctly");
+  STAssertTrue(gameSingleton.opponentId == 4, @"opponentId isn't set correctly");
 }
 
 
@@ -83,16 +106,44 @@
   [gameSingleton reset];
   
   // playerNumber should be 0 
-  STAssertTrue(gameSingleton.playerNumber == 0, @"playerNumber set to 0");
+  STAssertTrue(gameSingleton.playerNumber == 0, @"playerNumber should be set to 0");
   
   // templateId should be 0 
-  STAssertTrue(gameSingleton.templateId == 0, @"templateId set to 0");
+  STAssertTrue(gameSingleton.templateId == 0, @"templateId should be set to 0");
   
   // storyId should be 0 
-  STAssertTrue(gameSingleton.storyId == 0, @"storyId set to 0");
+  STAssertTrue(gameSingleton.storyId == 0, @"storyId should be set to 0");
   
   // opponentId should be 0 
-  STAssertTrue(gameSingleton.opponentId == 0, @"opponentId set to 0");
+  STAssertTrue(gameSingleton.opponentId == 0, @"opponentId should be set to 0");
 }
+
+/***APPLICATION TESTS***/
+
+
+
+
+- (void)tearDown
+{
+  // Tear-down code here.
+  
+  [super tearDown];
+}
+
+
+
+- (void)testAppDelegate
+{
+  //STAssertNotNil((self.appDelegate, @"Cannot find the application delegate");
+  
+}
+
+- (void)testTableView
+{
+  // simulate touching the tableview
+  //[self.viewController.tableView:[self.view viewWithTag:3]];
+}
+
+
 
 @end
