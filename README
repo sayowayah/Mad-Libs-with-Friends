@@ -1,0 +1,3 @@
+This is a two-player game with Facebook integration, so to test all the functionality, you need to have two simulators/devices with separate Facebook accounts.
+Unit tests were primarily done on the backend webservice calls as opposed to the iOS client
+Database has not been populated with many story templates 

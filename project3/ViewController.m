@@ -103,10 +103,7 @@
 
 - (void) request:(FBRequest *)request didLoad:(id)result {
   NSMutableDictionary *friendData = [[NSMutableDictionary alloc] initWithDictionary:result];
-
-  // TESTING
-  //  NSLog(request.url);
-
+  
   if ([request.url isEqualToString:@"https://graph.facebook.com/me/friends"]){
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     FriendsViewController *controller = [[FriendsViewController alloc] initWithNibName:@"FriendsViewController" bundle:nil];
@@ -157,7 +154,7 @@
 {
   switch (section) {
     case 0:
-      // TODO: call webservice API to get number of array of outstanding stories then return this number
+
       return [self.mine count];
       
     case 1:
@@ -200,17 +197,16 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
   
-  // TODO: get name of story and opposing player
-  // TODO: add storyId to the cell.textfield.tag
-  // TODO: add in detail text of story and words
-  //  cell.textLabel.text = [self.tfs objectAtIndex:indexPath.row];
+
   if (indexPath.section == 0) {
-    cell.textLabel.text = @"first section!";
+    cell.textLabel.text = [[self.mine objectAtIndex:indexPath.row] objectForKey:@"Name"];
+    cell.textLabel.tag = [[[self.mine objectAtIndex:indexPath.row] objectForKey:@"storyId"] intValue];
+    //cell.textLabel.text = @"second section!";
     return cell;    
   }
   else {
-    cell.textLabel.text = [[self.mine objectAtIndex:indexPath.row] objectForKey:@"Name"];
-    //cell.textLabel.text = @"second section!";
+    // TODO: get names and storyIds
+    cell.textLabel.text = @"Their turn";
     return cell;    
   }
   
@@ -218,10 +214,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   GameSingleton *gameSingleton = [GameSingleton getInstance];
+  // for games that the user needs to finish...
   if (indexPath.section == 1){
-
+    
     gameSingleton.playerNumber = 2;
-
+    
     self.connectionRequest = 2;
     
     // get storyId, which is stored in the textLabel tag, store in gameSingleton, and create a data request
@@ -244,7 +241,7 @@
     
   }
   else {
-    // TODO: figure out what to do when user clicks on game that's on their turn    
+    // TODO: figure out what to do when user clicks on game that's on "their turn"    
   }
   
 }
@@ -261,11 +258,12 @@
   }
   else {
     NSLog(@"nothing wrong");
+    // for the asynchronous table data loading and refreshing
     if (self.connectionRequest ==1) {
       self.mine = returnedData;
       [self.tableView reloadData];
     }
-    
+    // for the call takes user to the next screen
     else {  
       FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
       formViewController.templateBlanks = returnedData;

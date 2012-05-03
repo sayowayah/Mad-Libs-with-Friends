@@ -83,7 +83,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+  
   // get templateId, which is stored in the textLabel tag, and create a data request
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   self.requestedTemplate = cell.textLabel.tag;
@@ -108,12 +108,12 @@
   //    NSData *results = data;
   //    NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
   //NSLog(ReturnStr);
-
+  
   NSMutableArray *templateBlanks = [[NSMutableArray alloc] init];
   NSError* error = nil;
-
+  
   templateBlanks = [NSJSONSerialization JSONObjectWithData:data 
-                                              options:NSJSONReadingMutableContainers error:&error];
+                                                   options:NSJSONReadingMutableContainers error:&error];
   if (templateBlanks == nil) {
     NSLog(@"error: %@", error);
   }
@@ -121,8 +121,8 @@
     NSLog(@"nothing wrong");
   }
   
-
-
+  
+  
   FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
   formViewController.templateBlanks = templateBlanks;
   

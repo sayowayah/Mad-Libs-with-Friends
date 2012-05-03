@@ -34,12 +34,12 @@
   [super viewDidLoad];
   
   self.title = @"Enter words";
-
+  
   // iterate through array of blank words and create row for each blank word
   int i=0;
   for (NSDictionary *blanks in self.templateBlanks) {
     
-
+    
     
     UITextField *wordInput = [[UITextField alloc] initWithFrame:CGRectMake(150, 15 + (i*40), 120, 30)];
     wordInput.borderStyle = UITextBorderStyleRoundedRect;
@@ -59,7 +59,7 @@
     [self.scrollView addSubview:partOfSpeech];
     
     i++;
-
+    
   }
   
   // make the scrollView height dynamic based on number of input rows (each screen fits about 7 rows)
@@ -88,14 +88,14 @@
 
 
 - (void)submit:(id)sender {
-
-    GameSingleton *gameSingleton = [GameSingleton getInstance];
-
+  
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  
   NSString *userId = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"userId"]];
   
   NSString *opponentId = [NSString stringWithFormat:@"%d", gameSingleton.opponentId];
   
-
+  
   
   NSString *templateIdString = [NSString stringWithFormat:@"%d",gameSingleton.templateId];
   
@@ -126,10 +126,10 @@
   }
   // else if player 2, submit the words
   else {
-
+    
     [self submitWords:self];
     
-   }  
+  }  
 }
 
 - (void) submitWords:(id)sender {
@@ -149,11 +149,11 @@
     }
   }
   
-
+  
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   NSString *storyIdString = [NSString stringWithFormat:@"%d", gameSingleton.storyId];
-
-
+  
+  
   NSString *userIdString = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"userId"]];
   
   // Create submission array of userId, storyId, and wordList
@@ -220,7 +220,7 @@
 - (void) loadCompletedStory:(id)sender {
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   self.connectionRequest = 3;
-    NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=%d",gameSingleton.storyId];
+  NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=%d",gameSingleton.storyId];
   
   //TESTING: delete below when done
   //  NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=7"];
