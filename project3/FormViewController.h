@@ -14,8 +14,6 @@
 @property (strong, nonatomic) NSMutableArray *wordList;
 @property (strong, nonatomic) NSArray *submitData;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (assign, nonatomic) NSInteger templateId;
-@property (assign, nonatomic) NSInteger storyId;
 @property (assign, nonatomic) NSInteger connectionRequest;
 
 - (IBAction)submit:(id)sender;

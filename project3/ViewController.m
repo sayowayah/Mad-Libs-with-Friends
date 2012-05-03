@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "TemplateViewController.h"
 #import "FormViewController.h"
+#import "GameSingleton.h"
 
 @interface ViewController ()
 
@@ -89,7 +90,8 @@
   [super viewDidLoad];
   // hide the navigation bar upon load
   [self.navigationController setNavigationBarHidden:YES animated:YES];
-	// Do any additional setup after loading the view, typically from a nib.
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  [gameSingleton reset];
 }
 
 - (void)viewDidUnload {
@@ -110,7 +112,13 @@
 
 - (IBAction)startGame:(id)sender {
   
+  // set player number global variable to 1
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  gameSingleton.playerNumber = 1;
+  
   // TODO: Link instead to FB friends when implemented
+  // TODO: set opponentId after FB friend is chosen
+  gameSingleton.opponentId = 2;
 
   // get NSArray of templates from JSON API call
   NSArray* templates = [NSArray arrayWithContentsOfJSONURLString:@"http://six6.ca/friendlibs_api/index.php/main/getStoryTemplates"];
@@ -195,7 +203,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  // TODO: load game
+  // TODO: load game, remember to set gameSingleton.playerNumber = 2
   // TODO: figure out what to do when user clicks on game that's on their turn
 }
 

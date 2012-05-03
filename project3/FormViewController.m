@@ -7,6 +7,7 @@
 //
 
 #import "FormViewController.h"
+#import "GameSingleton.h"
 
 @interface FormViewController ()
 
@@ -18,8 +19,6 @@
 @synthesize submitData = _submitData;
 @synthesize wordList = _wordList;
 @synthesize scrollView = _scrollView;
-@synthesize templateId = _templateId;
-@synthesize storyId = _storyId;
 @synthesize connectionRequest = _connectionRequest;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -92,14 +91,16 @@
   // TODO: get appropriate opponentID (add a property)
   NSString *opponentId = [NSString stringWithFormat:@"%d", 2];
   
-  NSString *templateIdString = [NSString stringWithFormat:@"%d",self.templateId];
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
   
-  // TODO: get appropriate player number (add a property). either 1 or 2
-  int player = 1;
+  NSString *templateIdString = [NSString stringWithFormat:@"%d",gameSingleton.templateId];
+  
+  // TODO: delete after testing
+  //int player = 1;
 
   // if player 1, create story instance first before submitting words
-  if (player == 1) {
-
+  if (gameSingleton.playerNumber == 1) {
+    NSLog(@"Creating story instance");
     self.connectionRequest = 1;
     // Create submission array of templateId, userId, and userId2    
     NSArray *submitData = [[NSArray alloc] initWithObjects: templateIdString, userId, opponentId, nil];
@@ -163,7 +164,7 @@
 }
 
 - (void) submitWords:(id)sender {
-  
+  NSLog(@"Submitting words");
   self.connectionRequest = 2;
   
   // iterate through all the textfields and create array of words with (wordId, word) key/value pairs
@@ -179,9 +180,12 @@
     }
   }
   
-  // TODO: get appropriate storyID
-  // NSString *storyIdString = [NSString stringWithFormat:@"%d", self.storyId];
-  NSString *storyIdString = [NSString stringWithFormat:@"%d", 1];
+
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  NSString *storyIdString = [NSString stringWithFormat:@"%d", gameSingleton.storyId];
+
+  // TODO: delete once tested
+  //  NSString *storyIdString = [NSString stringWithFormat:@"%d", 1];
   
   // TODO: get appropriate userID from UserDefaults
   NSString *userIdString = [NSString stringWithFormat:@"%d", 1];
@@ -194,7 +198,7 @@
   NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
   
   /*
-   // test JSON format
+   // TESTING: JSON format
    NSString *jsonString = [[NSString alloc] initWithData:jsonSubmitData encoding:NSUTF8StringEncoding];
    NSLog(jsonString);
    */
@@ -213,35 +217,34 @@
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+  NSLog(@"Checking connection type");
+  // TESTING
   //NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
   //NSLog(ReturnStr);
-  
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
   // if connectionRequest is 1, set storyId as given from server, then call submitWords method
   if (self.connectionRequest == 1){
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-    self.storyId = [dataString intValue];
+    GameSingleton *gameSingleton = [GameSingleton getInstance];
+    gameSingleton.storyId = [dataString intValue];
     [self submitWords:self];
   }
   // proceed with game after words are submitted
   else {
-    NSMutableArray *results = [[NSMutableArray alloc] init];
-    NSError* error = nil;
-    results = [NSJSONSerialization JSONObjectWithData:data 
-                                              options:NSJSONReadingMutableContainers error:&error];
-    if (results == nil) {
-      NSLog(@"error: %@", error);
+    // if player 1, go back to ViewController
+    NSLog(@"Checking player number");
+    if (gameSingleton.playerNumber == 1) {
+      // TODO: add in a SUBMIT SUCCESS pop up or something
+      [self.navigationController popToRootViewControllerAnimated:YES];      
     }
     else {
-      NSLog(@"nothing wrong. data:  %@", results);
-    }
-    
-    
-    // TODO: check if user is player 1 or 2
-    // if player 1, go back to ViewController
-    
-    [self.navigationController popToRootViewControllerAnimated:YES];
-    
     // if player 2, show completed story
+    }
+
+    
+
+    
+
     
     /*
      FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];

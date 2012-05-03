@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		152950321552513300B5E0D3 /* GameSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 152950311552513300B5E0D3 /* GameSingleton.m */; };
 		1587A21215463951006BB3D8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21115463951006BB3D8 /* UIKit.framework */; };
 		1587A21415463951006BB3D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21315463951006BB3D8 /* Foundation.framework */; };
 		1587A21615463951006BB3D8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21515463951006BB3D8 /* CoreGraphics.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		152950301552513300B5E0D3 /* GameSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSingleton.h; sourceTree = "<group>"; };
+		152950311552513300B5E0D3 /* GameSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSingleton.m; sourceTree = "<group>"; };
 		1587A20D15463951006BB3D8 /* project3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = project3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1587A21115463951006BB3D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1587A21315463951006BB3D8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -139,6 +142,8 @@
 				1587A25415464888006BB3D8 /* TemplateViewController.xib */,
 				1587A27515465D13006BB3D8 /* FormViewController.h */,
 				1587A27615465D13006BB3D8 /* FormViewController.m */,
+				152950301552513300B5E0D3 /* GameSingleton.h */,
+				152950311552513300B5E0D3 /* GameSingleton.m */,
 				1587A27715465D13006BB3D8 /* FormViewController.xib */,
 				1587A21815463951006BB3D8 /* Supporting Files */,
 			);
@@ -288,6 +293,7 @@
 				1587A22515463951006BB3D8 /* ViewController.m in Sources */,
 				1587A25515464888006BB3D8 /* TemplateViewController.m in Sources */,
 				1587A27815465D13006BB3D8 /* FormViewController.m in Sources */,
+				152950321552513300B5E0D3 /* GameSingleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,7 @@
 
 #import "TemplateViewController.h"
 #import "FormViewController.h"
+#import "GameSingleton.h"
 
 @interface TemplateViewController ()
 
@@ -163,7 +164,13 @@
 
   FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
   formViewController.templateBlanks = templateBlanks;
-  formViewController.templateId = self.requestedTemplate;
+  
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  gameSingleton.templateId = self.requestedTemplate;
+
+  // TODO: delete this once tested
+  //formViewController.templateId = self.requestedTemplate;
+  
   // Pass the selected object to the new view controller.
   [self.navigationController pushViewController:formViewController animated:YES];
   
