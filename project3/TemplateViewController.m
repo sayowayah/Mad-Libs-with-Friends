@@ -72,6 +72,8 @@
   
   // get list of template names
   cell.textLabel.text = [[self.templates objectAtIndex:indexPath.row] objectForKey:@"Name"];
+  // store template ID into textLabel tag
+  cell.textLabel.tag = [[[self.templates objectAtIndex:indexPath.row] objectForKey:@"ID"] intValue];
   return cell;
 }
 
@@ -118,11 +120,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
+  // get templateId, which is stored in the textLabel tag, and create a data request
+  UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  NSString *requestString = [[NSString alloc] initWithFormat:@"templateId=%d",cell.textLabel.tag];
+  NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
+  
   // Navigation logic may go here. Create and push another view controller.
   NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getTemplateBlanks"];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-  
-  NSData *requestData = [@"templateId=1" dataUsingEncoding:NSUTF8StringEncoding];
   
   [request setHTTPMethod:@"POST"];
   [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
@@ -131,14 +137,6 @@
   [request setHTTPBody: requestData];
   
   (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
-
-  /*
-  __autoreleasing NSError* error = nil;
-  id result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-  if (error != nil) return nil;
-  //  return result;  
-  */
-  
   
 }
 
@@ -149,8 +147,6 @@
 
   NSMutableArray *templateBlanks = [[NSMutableArray alloc] init];
   NSError* error = nil;
-  
-  // TODO: check backend of getTemplateBlanks for unterminated strings
 
   templateBlanks = [NSJSONSerialization JSONObjectWithData:data 
                                               options:NSJSONReadingMutableContainers error:&error];

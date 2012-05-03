@@ -16,5 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 - (IBAction)submit:(id)sender;
+- (IBAction)hideKeyboard:(id)sender;
 
 @end

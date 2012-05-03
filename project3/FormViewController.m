@@ -32,7 +32,6 @@
   
   self.title = @"Enter words";
 
-  
   // iterate through array of blank words and create row for each blank word
   int i=0;
   for (NSDictionary *blanks in self.templateBlanks) {
@@ -42,7 +41,10 @@
     UITextField *wordInput = [[UITextField alloc] initWithFrame:CGRectMake(150, 15 + (i*40), 120, 30)];
     wordInput.borderStyle = UITextBorderStyleRoundedRect;
     [wordInput setTag:[[blanks objectForKey:@"Word_ID"] intValue]];
+    [wordInput addTarget:self action:@selector(hideKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
     [self.scrollView addSubview:wordInput];
+    
     
     
     UILabel *partOfSpeech = [[UILabel alloc] initWithFrame:CGRectMake(15, 15 + (i*40), 110, 30)];
@@ -52,23 +54,30 @@
     i++;
 
   }
-
-  // Make the scrollView height dynamic based on number of input rows (each screen fits about 7 rows)
-  int numberOfScreens = (i / 7) + 0.5;
-  self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*numberOfScreens);
   
+  // make the scrollView height dynamic based on number of input rows (each screen fits about 7 rows)
+  int numberOfScreens = (i / 7) + 0.5;
+  self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*numberOfScreens);  
+  
+  // create submit button on the bottom of the page
   UIButton *submit = [[UIButton alloc] initWithFrame:CGRectMake(100, 30 + (i*40), 120, 50)];
   [submit setBackgroundColor:[UIColor blueColor]];
   [submit setTitle:@"Submit" forState:UIControlStateNormal];
-  
-  // TODO: add in submit functionality sending tags of input fields to the server
-  //[submit addTarget:self action:@selector(test) forControlEvents:UIControlEventTouchUpInside];
   [submit addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
   
   [self.scrollView addSubview:submit];
   
 }
 
+// NICE TO HAVE: trying to hide keyboard when user presses on background
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+  [self.view resignFirstResponder];
+}
+
+- (void) hideKeyboard:(id)sender {
+  [sender resignFirstResponder];
+}
 
 
 - (void)submit:(id)sender {
@@ -93,7 +102,6 @@
 
   // convert submission array into JSON, then submit via POST
   NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
-  NSString *jsonText = [[NSString alloc] initWithData:jsonSubmitData encoding:NSUTF8StringEncoding];
   NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/submitStory"];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];  
   [request setHTTPMethod:@"POST"];
@@ -106,7 +114,6 @@
   
   
 }
-
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
   //   NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
