@@ -14,6 +14,8 @@
 
 @end
 
+
+
 // extend NSArray class with JSON decoding and encoding functionality
 
 @interface NSArray(JSONCategories)
@@ -23,6 +25,7 @@
 @end
 
 @implementation NSArray(JSONCategories)
+
 +(NSArray*)arrayWithContentsOfJSONURLString:
 (NSString*)urlAddress
 {
@@ -49,6 +52,8 @@
 
 @implementation FriendsViewController
 
+@synthesize friendData = _friendData;
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
   self = [super initWithStyle:style];
@@ -68,6 +73,8 @@
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   self.title = @"Choose a Friend";
+  
+  //NSLog(@"friend data %n", self.friendData);
 }
 
 - (void)viewDidUnload
