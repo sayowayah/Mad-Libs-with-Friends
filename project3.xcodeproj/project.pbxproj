@@ -10,6 +10,8 @@
 		152950321552513300B5E0D3 /* GameSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 152950311552513300B5E0D3 /* GameSingleton.m */; };
 		1529503615525F2500B5E0D3 /* StoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1529503415525F2500B5E0D3 /* StoryViewController.m */; };
 		1529503715525F2500B5E0D3 /* StoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1529503515525F2500B5E0D3 /* StoryViewController.xib */; };
+		1529503B1552743B00B5E0D3 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152950391552743A00B5E0D3 /* FriendsViewController.m */; };
+		1529503C1552743B00B5E0D3 /* FriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1529503A1552743A00B5E0D3 /* FriendsViewController.xib */; };
 		1587A21215463951006BB3D8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21115463951006BB3D8 /* UIKit.framework */; };
 		1587A21415463951006BB3D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21315463951006BB3D8 /* Foundation.framework */; };
 		1587A21615463951006BB3D8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1587A21515463951006BB3D8 /* CoreGraphics.framework */; };
@@ -45,6 +47,9 @@
 		1529503315525F2500B5E0D3 /* StoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryViewController.h; sourceTree = "<group>"; };
 		1529503415525F2500B5E0D3 /* StoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryViewController.m; sourceTree = "<group>"; };
 		1529503515525F2500B5E0D3 /* StoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryViewController.xib; sourceTree = "<group>"; };
+		152950381552743A00B5E0D3 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		152950391552743A00B5E0D3 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
+		1529503A1552743A00B5E0D3 /* FriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsViewController.xib; sourceTree = "<group>"; };
 		1587A20D15463951006BB3D8 /* project3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = project3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1587A21115463951006BB3D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1587A21315463951006BB3D8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -142,6 +147,9 @@
 				1587A22315463951006BB3D8 /* ViewController.h */,
 				1587A22415463951006BB3D8 /* ViewController.m */,
 				1587A22615463951006BB3D8 /* ViewController.xib */,
+				152950381552743A00B5E0D3 /* FriendsViewController.h */,
+				152950391552743A00B5E0D3 /* FriendsViewController.m */,
+				1529503A1552743A00B5E0D3 /* FriendsViewController.xib */,
 				1587A25215464888006BB3D8 /* TemplateViewController.h */,
 				1587A25315464888006BB3D8 /* TemplateViewController.m */,
 				1587A25415464888006BB3D8 /* TemplateViewController.xib */,
@@ -263,6 +271,7 @@
 				1587A25615464888006BB3D8 /* TemplateViewController.xib in Resources */,
 				1587A27915465D13006BB3D8 /* FormViewController.xib in Resources */,
 				1529503715525F2500B5E0D3 /* StoryViewController.xib in Resources */,
+				1529503C1552743B00B5E0D3 /* FriendsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +313,7 @@
 				1587A27815465D13006BB3D8 /* FormViewController.m in Sources */,
 				152950321552513300B5E0D3 /* GameSingleton.m in Sources */,
 				1529503615525F2500B5E0D3 /* StoryViewController.m in Sources */,
+				1529503B1552743B00B5E0D3 /* FriendsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
