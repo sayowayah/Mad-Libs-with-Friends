@@ -8,24 +8,46 @@
 
 #import "project3Tests.h"
 #import "GameSingleton.h"
+#import "AppDelegate.h"
+#import "ViewController.h"
+#import "FriendsViewController.h"
+#import "TemplateViewController.h"
+#import "FormViewController.h"
+#import "StoryViewController.h"
+
+@interface project3Tests ()
+
+@property (nonatomic, readwrite, weak) AppDelegate *appDelegate;
+@property (nonatomic, readwrite, weak) ViewController *viewController;
+@property (nonatomic, readwrite, weak) FriendsViewController *friendsViewController;
+@property (nonatomic, readwrite, weak) TemplateViewController *templateViewController;
+@property (nonatomic, readwrite, weak) FormViewController *formViewController;
+@property (nonatomic, readwrite, weak) StoryViewController *storyViewController;
+@property (nonatomic, readwrite, weak) UIView *view;
+
+@end
+
 
 @implementation project3Tests
 
+@synthesize appDelegate = _appDelegate;
+@synthesize viewController = _viewController;
+@synthesize friendsViewController = _friendsViewController;
+@synthesize templateViewController = _templateViewController;
+@synthesize formViewController = _formViewController;
+@synthesize storyViewController = _storyViewController;
+@synthesize view = _view;
+
 - (void)setUp
 {
-    [super setUp];
-    
-    // Set-up code here.
+  [super setUp];
+  
+  self.appDelegate = [[UIApplication sharedApplication] delegate];
+  self.viewController = self.appDelegate.viewController;
+  self.view = self.viewController.view;
 }
 
-- (void)tearDown
-{
-    // Tear-down code here.
-    
-    [super tearDown];
-}
-
-
+/***LOGIC TESTS***/
 // upon initialization, all values should be 0
 -(void)testGameSingleton_init
 {  
@@ -94,5 +116,33 @@
   // opponentId should be 0 
   STAssertTrue(gameSingleton.opponentId == 0, @"opponentId should be set to 0");
 }
+
+/***APPLICATION TESTS***/
+
+
+
+
+- (void)tearDown
+{
+  // Tear-down code here.
+  
+  [super tearDown];
+}
+
+
+
+- (void)testAppDelegate
+{
+  //STAssertNotNil((self.appDelegate, @"Cannot find the application delegate");
+  
+}
+
+
+//@interface project3Tests ()
+
+
+
+
+
 
 @end
