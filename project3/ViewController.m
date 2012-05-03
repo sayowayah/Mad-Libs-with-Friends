@@ -53,47 +53,19 @@
 @synthesize theirs = _theirs;
 @synthesize mine = _mine;
 @synthesize facebook;
+@synthesize connectionRequest = _connectionRequest;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   // hide the navigation bar upon load
   [self.navigationController setNavigationBarHidden:YES animated:YES];
+  // reset gameSingleton whenever home screen appears
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   [gameSingleton reset];
   
-  
-  // get NSArray of outstanding stories from JSON API call
-  NSString *requestString = [[NSString alloc] initWithFormat:@"userId=%d",1];
-  NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
-  NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getStoriesOutstanding"];
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-  
-  [request setHTTPMethod:@"POST"];
-  [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
-  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-  [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-  [request setHTTPBody: requestData];
-  
-  (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
-  
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-  
-  NSMutableArray *theirs = [[NSMutableArray alloc] init];
-  NSError* error = nil;
-  
-  theirs = [NSJSONSerialization JSONObjectWithData:data 
-                                                   options:NSJSONReadingMutableContainers error:&error];
-  if (theirs == nil) {
-    NSLog(@"error: %@", error);
-  }
-  else {
-    NSLog(@"nothing wrong");
-    self.theirs = theirs;
-    [self.tableView reloadData];
-
-  }
+  // call FB API to get userId
+  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+  [[delegate facebook] requestWithGraphPath:@"me" andDelegate:self];
   
 }
 
@@ -106,6 +78,9 @@
 	[super viewDidAppear:animated];
   // hide the navigation bar if user presses back from next screen
   [self.navigationController setNavigationBarHidden:YES animated:YES];
+  // reset gameSingleton whenever home screen appears
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
+  [gameSingleton reset];
 }
 
 
@@ -123,21 +98,49 @@
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
   [[delegate facebook] requestWithGraphPath:@"me/friends" andDelegate:self];  
   
+  
 }
 
 - (void) request:(FBRequest *)request didLoad:(id)result {
   NSMutableDictionary *friendData = [[NSMutableDictionary alloc] initWithDictionary:result];
 
-  [self.navigationController setNavigationBarHidden:NO animated:YES];
-  FriendsViewController *controller = [[FriendsViewController alloc] initWithNibName:@"FriendsViewController" bundle:nil];
-  // set the controller friendData = the data FB returns
-  controller.friendData = friendData;
-  [self.navigationController pushViewController:controller animated:YES];
+  // TESTING
+  //  NSLog(request.url);
+
+  if ([request.url isEqualToString:@"https://graph.facebook.com/me/friends"]){
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    FriendsViewController *controller = [[FriendsViewController alloc] initWithNibName:@"FriendsViewController" bundle:nil];
+    // set the controller friendData = the data FB returns
+    controller.friendData = friendData;
+    [self.navigationController pushViewController:controller animated:YES];
+  }
+  // save userId into UserDefaults, then call oustanding stories
+  else {
+    self.connectionRequest = 1;
+    NSInteger userId = [[result valueForKey:@"id"] intValue];
+    [[NSUserDefaults standardUserDefaults] setInteger:userId forKey:@"userId"];
+    [[NSUserDefaults standardUserDefaults] synchronize];    
+    
+    // get NSArray of outstanding stories from JSON API call
+    NSString *requestString = [[NSString alloc] initWithFormat:@"userId=%d",userId];
+    NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getStoriesOutstanding"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+  }
   
 }
 
 -(void) request:(FBRequest *)request didFailWithError:(NSError *)error {
-    NSLog(@"error: %@", error);
+  NSLog(@"error: %@", error);
 }
 
 
@@ -154,12 +157,12 @@
 {
   switch (section) {
     case 0:
-  // TODO: call webservice API to get number of array of outstanding stories then return this number
-      return 2;
+      // TODO: call webservice API to get number of array of outstanding stories then return this number
+      return [self.mine count];
       
     case 1:
-      // TODO: call webservice API to get number of array of outstanding stories then return this number
-      return [self.theirs count];
+      // call webservice API to get number of array of outstanding stories then return this number
+      return 0;
     default:
       return 0;
   }
@@ -206,21 +209,71 @@
     return cell;    
   }
   else {
-    cell.textLabel.text = [[self.theirs objectAtIndex:indexPath.row] objectForKey:@"Name"];
+    cell.textLabel.text = [[self.mine objectAtIndex:indexPath.row] objectForKey:@"Name"];
     //cell.textLabel.text = @"second section!";
     return cell;    
   }
-
+  
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  GameSingleton *gameSingleton = [GameSingleton getInstance];
   if (indexPath.section == 1){
-  // TODO: load game, remember to set gameSingleton.playerNumber = 2    
+
+    gameSingleton.playerNumber = 2;
+
+    self.connectionRequest = 2;
+    
+    // get storyId, which is stored in the textLabel tag, store in gameSingleton, and create a data request
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    gameSingleton.storyId= cell.textLabel.tag;
+    NSString *requestString = [[NSString alloc] initWithFormat:@"userId=%d&storyId=%d",[[NSUserDefaults standardUserDefaults] integerForKey:@"userId"] ,gameSingleton.storyId];
+    NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getBlanksForStory"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];  
+    
+    
   }
   else {
-  // TODO: figure out what to do when user clicks on game that's on their turn    
+    // TODO: figure out what to do when user clicks on game that's on their turn    
   }
+  
+}
 
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+  
+  NSMutableArray *returnedData = [[NSMutableArray alloc] init];
+  NSError* error = nil;
+  
+  returnedData = [NSJSONSerialization JSONObjectWithData:data 
+                                                 options:NSJSONReadingMutableContainers error:&error];
+  if (returnedData == nil) {
+    NSLog(@"error: %@", error);
+  }
+  else {
+    NSLog(@"nothing wrong");
+    if (self.connectionRequest ==1) {
+      self.mine = returnedData;
+      [self.tableView reloadData];
+    }
+    
+    else {  
+      FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
+      formViewController.templateBlanks = returnedData;
+      
+      // Pass the selected object to the new view controller.
+      [self.navigationController pushViewController:formViewController animated:YES];
+    }  
+  }
 }
 
 

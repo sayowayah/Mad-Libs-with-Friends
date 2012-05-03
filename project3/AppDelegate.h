@@ -11,7 +11,6 @@
 
 @class ViewController;
 
-//@interface AppDelegate : UIResponder <UIApplicationDelegate>
 @interface AppDelegate : NSObject 
 <UIApplicationDelegate, FBSessionDelegate> {
   Facebook *facebook;

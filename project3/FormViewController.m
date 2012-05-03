@@ -53,6 +53,9 @@
     
     UILabel *partOfSpeech = [[UILabel alloc] initWithFrame:CGRectMake(15, 15 + (i*40), 110, 30)];
     [partOfSpeech setText:[blanks objectForKey:@"PartOfSpeech"]];
+    partOfSpeech.numberOfLines = 1;
+    partOfSpeech.minimumFontSize = 8.;
+    partOfSpeech.adjustsFontSizeToFitWidth = YES;
     [self.scrollView addSubview:partOfSpeech];
     
     i++;
@@ -85,20 +88,19 @@
 
 
 - (void)submit:(id)sender {
+
+    GameSingleton *gameSingleton = [GameSingleton getInstance];
+
+  NSString *userId = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"userId"]];
   
-  // TODO: get appropriate userID from UserDefaults
-  NSString *userId = [NSString stringWithFormat:@"%d", 1];
+  NSString *opponentId = [NSString stringWithFormat:@"%d", gameSingleton.opponentId];
   
-  // TODO: get appropriate opponentID (add a property)
-  NSString *opponentId = [NSString stringWithFormat:@"%d", 2];
-  
-  GameSingleton *gameSingleton = [GameSingleton getInstance];
+
   
   NSString *templateIdString = [NSString stringWithFormat:@"%d",gameSingleton.templateId];
   
   // TODO: delete after testing
-  //int player = 1;
-  gameSingleton.playerNumber = 2;
+  //  gameSingleton.playerNumber = 2;
   
   
   // if player 1, create story instance first before submitting words
@@ -127,43 +129,7 @@
 
     [self submitWords:self];
     
-    /* trying to refactor into submitWords
-    // iterate through all the textfields and create array of words with (wordId, word) key/value pairs
-    NSMutableArray *wordList = [[NSMutableArray alloc] init];
-    for (UIView *view in [self.scrollView subviews]) {
-      if ([view isKindOfClass:[UITextField class]]) {      
-        NSMutableDictionary *word = [[NSMutableDictionary alloc] init];
-        UITextField *textField = (UITextField *)view;
-        [word setValue:textField.text forKey:@"word"];
-        NSString *wordId = [NSString stringWithFormat:@"%d", textField.tag];
-        [word setValue:wordId forKey:@"wordId"];
-        [wordList addObject:word];
-      }
-    }
-    
-    // TODO: get appropriate storyID
-    NSString *storyId = [NSString stringWithFormat:@"%d", 1];
-    
-    // Create submission array of userId, storyId, and wordList
-    NSArray *submitData = [[NSArray alloc] initWithObjects: userId, storyId, wordList, nil];
-    NSError* error = nil;
-    
-    // convert submission array into JSON, then submit via POST
-    NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
-    
-    
-    NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/submitStory"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];  
-    [request setHTTPMethod:@"POST"];
-     */
-    //    [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
-    /*[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%d", [jsonSubmitData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody: jsonSubmitData];
-    
-    (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
-     */
-  }  
+   }  
 }
 
 - (void) submitWords:(id)sender {
@@ -187,11 +153,8 @@
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   NSString *storyIdString = [NSString stringWithFormat:@"%d", gameSingleton.storyId];
 
-  // TODO: delete once tested
-  //  NSString *storyIdString = [NSString stringWithFormat:@"%d", 1];
-  
-  // TODO: get appropriate userID from UserDefaults
-  NSString *userIdString = [NSString stringWithFormat:@"%d", 1];
+
+  NSString *userIdString = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:@"userId"]];
   
   // Create submission array of userId, storyId, and wordList
   NSArray *submitData = [[NSArray alloc] initWithObjects: userIdString, storyIdString, wordList, nil];
@@ -241,7 +204,6 @@
       [self.navigationController popToRootViewControllerAnimated:YES];      
     }
     else {
-    // TODO: if player 2, load completed story
       [self loadCompletedStory:self];
     }
   }
@@ -258,10 +220,10 @@
 - (void) loadCompletedStory:(id)sender {
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   self.connectionRequest = 3;
-  //  NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=%d",gameSingleton.storyId];
+    NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=%d",gameSingleton.storyId];
   
   //TESTING: delete below when done
-    NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=7"];
+  //  NSString *requestString = [[NSString alloc] initWithFormat:@"storyId=7"];
   
   NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
   

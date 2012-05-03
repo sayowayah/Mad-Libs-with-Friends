@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSArray *mine;
 @property (nonatomic, strong) NSArray *theirs;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (assign, nonatomic) NSInteger connectionRequest;
 - (IBAction)startGame:(id)sender;
 
 @end
