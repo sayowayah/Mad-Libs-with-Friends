@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) NSArray *templates;
 @property (strong, nonatomic) NSMutableArray *templateBlanks;
+@property (assign, nonatomic) NSInteger requestedTemplate;
 
 @end

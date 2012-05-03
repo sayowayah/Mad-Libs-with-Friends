@@ -130,24 +130,41 @@
 }
 
 
+
+
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  
+  switch (section) {
+    case 0:
   // TODO: call webservice API to get number of array of outstanding stories then return this number
-  return 2;
+      return 2;
+      
+    case 1:
+      // TODO: call webservice API to get number of array of outstanding stories then return this number
+      return 2;
+    default:
+      return 0;
+  }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-  switch (section) {      
-    case 0:
-      return @"Your Turn";
-      
-    case 1:
-      return @"Their Turn";
-
+  if ([tableView.dataSource tableView:tableView numberOfRowsInSection:section] == 0) {
+    return nil;
   }
-  return nil;
+  else {
+    switch (section) {      
+      case 0:
+        
+        return @"Your Turn";
+        
+      case 1:
+        return @"Their Turn";
+        
+    }
+    return nil;
+  }
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -163,11 +180,24 @@
   }
   
   // TODO: get name of story and opposing player
+  // TODO: add storyId to the cell.textfield.tag
+  // TODO: add in detail text of story and words
   //  cell.textLabel.text = [self.tfs objectAtIndex:indexPath.row];
-  cell.textLabel.text = @"Hello!";
-  return cell;
+  if (indexPath.section == 0) {
+    cell.textLabel.text = @"first section!";
+    return cell;    
+  }
+  else {
+    cell.textLabel.text = @"second section!";
+    return cell;    
+  }
+
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  // TODO: load game
+  // TODO: figure out what to do when user clicks on game that's on their turn
+}
 
 
 

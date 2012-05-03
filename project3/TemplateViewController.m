@@ -17,6 +17,7 @@
 
 @synthesize templates = _templates;
 @synthesize templateBlanks = _templateBlanks;
+@synthesize requestedTemplate = _requestedTemplate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -123,7 +124,8 @@
 
   // get templateId, which is stored in the textLabel tag, and create a data request
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-  NSString *requestString = [[NSString alloc] initWithFormat:@"templateId=%d",cell.textLabel.tag];
+  self.requestedTemplate = cell.textLabel.tag;
+  NSString *requestString = [[NSString alloc] initWithFormat:@"templateId=%d",self.requestedTemplate];
   NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
   
   // Navigation logic may go here. Create and push another view controller.
@@ -161,6 +163,7 @@
 
   FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
   formViewController.templateBlanks = templateBlanks;
+  formViewController.templateId = self.requestedTemplate;
   // Pass the selected object to the new view controller.
   [self.navigationController pushViewController:formViewController animated:YES];
   

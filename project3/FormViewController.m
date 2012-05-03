@@ -18,6 +18,9 @@
 @synthesize submitData = _submitData;
 @synthesize wordList = _wordList;
 @synthesize scrollView = _scrollView;
+@synthesize templateId = _templateId;
+@synthesize storyId = _storyId;
+@synthesize connectionRequest = _connectionRequest;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -42,6 +45,7 @@
     wordInput.borderStyle = UITextBorderStyleRoundedRect;
     [wordInput setTag:[[blanks objectForKey:@"Word_ID"] intValue]];
     [wordInput addTarget:self action:@selector(hideKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [wordInput setAutocorrectionType:UITextAutocorrectionTypeNo];
     
     [self.scrollView addSubview:wordInput];
     
@@ -81,11 +85,89 @@
 
 
 - (void)submit:(id)sender {
-
-  // iterate through all the textfields and put (wordId, word) as key/value pair into dictionary
-  NSMutableArray *wordList = [[NSMutableArray alloc] init];
   
+  // TODO: get appropriate userID from UserDefaults
+  NSString *userId = [NSString stringWithFormat:@"%d", 1];
+  
+  // TODO: get appropriate opponentID (add a property)
+  NSString *opponentId = [NSString stringWithFormat:@"%d", 2];
+  
+  NSString *templateIdString = [NSString stringWithFormat:@"%d",self.templateId];
+  
+  // TODO: get appropriate player number (add a property). either 1 or 2
+  int player = 1;
 
+  // if player 1, create story instance first before submitting words
+  if (player == 1) {
+
+    self.connectionRequest = 1;
+    // Create submission array of templateId, userId, and userId2    
+    NSArray *submitData = [[NSArray alloc] initWithObjects: templateIdString, userId, opponentId, nil];
+    NSError* error = nil;
+    
+    // convert submission array into JSON, then submit via POST
+    NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
+    
+    NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/createNewStory"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];  
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [jsonSubmitData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: jsonSubmitData];
+    
+    (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
+  }
+  // else if player 2, submit the words
+  else {
+
+    [self submitWords:self];
+    
+    /* trying to refactor into submitWords
+    // iterate through all the textfields and create array of words with (wordId, word) key/value pairs
+    NSMutableArray *wordList = [[NSMutableArray alloc] init];
+    for (UIView *view in [self.scrollView subviews]) {
+      if ([view isKindOfClass:[UITextField class]]) {      
+        NSMutableDictionary *word = [[NSMutableDictionary alloc] init];
+        UITextField *textField = (UITextField *)view;
+        [word setValue:textField.text forKey:@"word"];
+        NSString *wordId = [NSString stringWithFormat:@"%d", textField.tag];
+        [word setValue:wordId forKey:@"wordId"];
+        [wordList addObject:word];
+      }
+    }
+    
+    // TODO: get appropriate storyID
+    NSString *storyId = [NSString stringWithFormat:@"%d", 1];
+    
+    // Create submission array of userId, storyId, and wordList
+    NSArray *submitData = [[NSArray alloc] initWithObjects: userId, storyId, wordList, nil];
+    NSError* error = nil;
+    
+    // convert submission array into JSON, then submit via POST
+    NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
+    
+    
+    NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/submitStory"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];  
+    [request setHTTPMethod:@"POST"];
+     */
+    //    [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+    /*[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%d", [jsonSubmitData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: jsonSubmitData];
+    
+    (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
+     */
+  }  
+}
+
+- (void) submitWords:(id)sender {
+  
+  self.connectionRequest = 2;
+  
+  // iterate through all the textfields and create array of words with (wordId, word) key/value pairs
+  NSMutableArray *wordList = [[NSMutableArray alloc] init];
   for (UIView *view in [self.scrollView subviews]) {
     if ([view isKindOfClass:[UITextField class]]) {      
       NSMutableDictionary *word = [[NSMutableDictionary alloc] init];
@@ -96,23 +178,26 @@
       [wordList addObject:word];
     }
   }
-
-  // TODO: get appropriate userID and storyIDs. pass 0 as storyId if this is player 1
-  NSString *userId = [NSString stringWithFormat:@"%d", 1];
-  NSString *storyId = [NSString stringWithFormat:@"%d", 1];
+  
+  // TODO: get appropriate storyID
+  // NSString *storyIdString = [NSString stringWithFormat:@"%d", self.storyId];
+  NSString *storyIdString = [NSString stringWithFormat:@"%d", 1];
+  
+  // TODO: get appropriate userID from UserDefaults
+  NSString *userIdString = [NSString stringWithFormat:@"%d", 1];
   
   // Create submission array of userId, storyId, and wordList
-  NSArray *submitData = [[NSArray alloc] initWithObjects: userId, storyId, wordList, nil];
+  NSArray *submitData = [[NSArray alloc] initWithObjects: userIdString, storyIdString, wordList, nil];
   NSError* error = nil;
-
+  
   // convert submission array into JSON, then submit via POST
   NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
   
   /*
-  // test JSON format
-  NSString *jsonString = [[NSString alloc] initWithData:jsonSubmitData encoding:NSUTF8StringEncoding];
-  NSLog(jsonString);
-  */
+   // test JSON format
+   NSString *jsonString = [[NSString alloc] initWithData:jsonSubmitData encoding:NSUTF8StringEncoding];
+   NSLog(jsonString);
+   */
   
   NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/submitStory"];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];  
@@ -123,40 +208,49 @@
   [request setHTTPBody: jsonSubmitData];
   
   (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
-  
-  
 }
+
+
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
   //NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
   //NSLog(ReturnStr);
   
-  
-  NSMutableArray *results = [[NSMutableArray alloc] init];
-  NSError* error = nil;
-  results = [NSJSONSerialization JSONObjectWithData:data 
-                                                   options:NSJSONReadingMutableContainers error:&error];
-  if (results == nil) {
-    NSLog(@"error: %@", error);
+  // if connectionRequest is 1, set storyId as given from server, then call submitWords method
+  if (self.connectionRequest == 1){
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    self.storyId = [dataString intValue];
+    [self submitWords:self];
   }
+  // proceed with game after words are submitted
   else {
-    NSLog(@"nothing wrong. data:  %@", results);
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    NSError* error = nil;
+    results = [NSJSONSerialization JSONObjectWithData:data 
+                                              options:NSJSONReadingMutableContainers error:&error];
+    if (results == nil) {
+      NSLog(@"error: %@", error);
+    }
+    else {
+      NSLog(@"nothing wrong. data:  %@", results);
+    }
+    
+    
+    // TODO: check if user is player 1 or 2
+    // if player 1, go back to ViewController
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    // if player 2, show completed story
+    
+    /*
+     FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
+     formViewController.templateBlanks = templateBlanks;
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:formViewController animated:YES];
+     */  
   }
   
-  
-  // check if user is player 1 or 2
-  // if player 1, go back to ViewController
-  
-  [self.navigationController popToRootViewControllerAnimated:YES];
-  
-  // if player 2, show completed story
-  
-  /*
-  FormViewController *formViewController = [[FormViewController alloc] initWithNibName:@"FormViewController" bundle:nil];
-  formViewController.templateBlanks = templateBlanks;
-  // Pass the selected object to the new view controller.
-  [self.navigationController pushViewController:formViewController animated:YES];
-  */
 }
 
 
