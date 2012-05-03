@@ -11,7 +11,7 @@
 @interface FormViewController : UIViewController
 
 @property (strong, nonatomic) NSArray *templateBlanks;
-@property (strong, nonatomic) NSMutableDictionary *wordList;
+@property (strong, nonatomic) NSMutableArray *wordList;
 @property (strong, nonatomic) NSArray *submitData;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 

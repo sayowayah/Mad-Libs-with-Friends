@@ -131,15 +131,15 @@
 			children = (
 				1587A22015463951006BB3D8 /* AppDelegate.h */,
 				1587A22115463951006BB3D8 /* AppDelegate.m */,
-				1587A27515465D13006BB3D8 /* FormViewController.h */,
-				1587A27615465D13006BB3D8 /* FormViewController.m */,
-				1587A27715465D13006BB3D8 /* FormViewController.xib */,
-				1587A25215464888006BB3D8 /* TemplateViewController.h */,
-				1587A25315464888006BB3D8 /* TemplateViewController.m */,
-				1587A25415464888006BB3D8 /* TemplateViewController.xib */,
 				1587A22315463951006BB3D8 /* ViewController.h */,
 				1587A22415463951006BB3D8 /* ViewController.m */,
 				1587A22615463951006BB3D8 /* ViewController.xib */,
+				1587A25215464888006BB3D8 /* TemplateViewController.h */,
+				1587A25315464888006BB3D8 /* TemplateViewController.m */,
+				1587A25415464888006BB3D8 /* TemplateViewController.xib */,
+				1587A27515465D13006BB3D8 /* FormViewController.h */,
+				1587A27615465D13006BB3D8 /* FormViewController.m */,
+				1587A27715465D13006BB3D8 /* FormViewController.xib */,
 				1587A21815463951006BB3D8 /* Supporting Files */,
 			);
 			path = project3;
@@ -457,6 +457,7 @@
 				1587A24215463952006BB3D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1587A24315463952006BB3D8 /* Build configuration list for PBXNativeTarget "project3Tests" */ = {
 			isa = XCConfigurationList;
@@ -465,6 +466,7 @@
 				1587A24515463952006BB3D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

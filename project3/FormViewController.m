@@ -83,16 +83,21 @@
 - (void)submit:(id)sender {
 
   // iterate through all the textfields and put (wordId, word) as key/value pair into dictionary
-  NSMutableDictionary *wordList = [[NSMutableDictionary alloc] init];
+  NSMutableArray *wordList = [[NSMutableArray alloc] init];
+  
+
   for (UIView *view in [self.scrollView subviews]) {
     if ([view isKindOfClass:[UITextField class]]) {      
+      NSMutableDictionary *word = [[NSMutableDictionary alloc] init];
       UITextField *textField = (UITextField *)view;
+      [word setValue:textField.text forKey:@"word"];
       NSString *wordId = [NSString stringWithFormat:@"%d", textField.tag];
-      [wordList setValue:textField.text forKey:wordId];
+      [word setValue:wordId forKey:@"wordId"];
+      [wordList addObject:word];
     }
   }
 
-  // TODO: get appropriate userID and storyIDs
+  // TODO: get appropriate userID and storyIDs. pass 0 as storyId if this is player 1
   NSString *userId = [NSString stringWithFormat:@"%d", 1];
   NSString *storyId = [NSString stringWithFormat:@"%d", 1];
   
@@ -102,6 +107,13 @@
 
   // convert submission array into JSON, then submit via POST
   NSData* jsonSubmitData = [NSJSONSerialization dataWithJSONObject:submitData options:NSJSONWritingPrettyPrinted error:&error];  
+  
+  /*
+  // test JSON format
+  NSString *jsonString = [[NSString alloc] initWithData:jsonSubmitData encoding:NSUTF8StringEncoding];
+  NSLog(jsonString);
+  */
+  
   NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/submitStory"];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];  
   [request setHTTPMethod:@"POST"];
@@ -116,7 +128,7 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-  //   NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+  //NSString *ReturnStr = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
   //NSLog(ReturnStr);
   
   
