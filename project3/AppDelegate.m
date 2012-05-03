@@ -28,7 +28,10 @@
     facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
   }
   if (![facebook isSessionValid]) {
-    [facebook authorize:nil];
+    NSArray *permissions = [[NSArray alloc] initWithObjects:
+                            @"publish_actions", 
+                            nil];
+    [facebook authorize:permissions];
   }
   
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
