@@ -11,7 +11,6 @@
 @interface StoryViewController : UIViewController
 
 @property (strong, nonatomic) NSString *completedStoryText;
-@property (weak, nonatomic) IBOutlet UILabel *story;
 @property (weak, nonatomic) IBOutlet UIButton *exit;
 @property (weak, nonatomic) IBOutlet UIScrollView *scroll;
 - (IBAction)exit:(id)sender;
