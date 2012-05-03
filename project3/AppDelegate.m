@@ -34,19 +34,20 @@
     [facebook authorize:permissions];
   }
   
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  
+  
   self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-
+  
   // create navigation controller 
   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
   // hide the navigation bar on first screen
   [navigationController setNavigationBarHidden:YES animated:NO];
   self.window.rootViewController = navigationController;
-    [self.window makeKeyAndVisible];
-    return YES;
+  [self.window makeKeyAndVisible];
+  return YES;
 }
+
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
@@ -62,32 +63,32 @@
 }
 
 - (void)fbDidNotLogin:(BOOL)cancelled {
-
-/**
- * Called after the access token was extended. If your application has any
- * references to the previous access token (for example, if your application
- * stores the previous access token in persistent storage), your application
- * should overwrite the old access token with the new one in this method.
- * See extendAccessToken for more details.
- */
+  
+  /**
+   * Called after the access token was extended. If your application has any
+   * references to the previous access token (for example, if your application
+   * stores the previous access token in persistent storage), your application
+   * should overwrite the old access token with the new one in this method.
+   * See extendAccessToken for more details.
+   */
 }
 
 - (void)fbDidExtendToken:(NSString*)accessToken expiresAt:(NSDate*)expiresAt {
-
-/**
- * Called when the user logged out.
- */
+  
+  /**
+   * Called when the user logged out.
+   */
 }
 
 - (void)fbDidLogout {
-
-/**
- * Called when the current session has expired. This might happen when:
- *  - the access token expired
- *  - the app has been disabled
- *  - the user revoked the app's permissions
- *  - the user changed his or her password
- */
+  
+  /**
+   * Called when the current session has expired. This might happen when:
+   *  - the access token expired
+   *  - the app has been disabled
+   *  - the user revoked the app's permissions
+   *  - the user changed his or her password
+   */
 }
 
 - (void)fbSessionInvalidated {

@@ -7,6 +7,7 @@
 //
 
 
+#import "AppDelegate.h"
 #import "ViewController.h"
 #import "TemplateViewController.h"
 #import "FormViewController.h"
@@ -52,20 +53,25 @@
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   gameSingleton.playerNumber = 1;
   
-  // TODO: load the FB friends here with the calls
-
+  // load FB friends from API
+  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+  [[delegate facebook] requestWithGraphPath:@"me/friends" andDelegate:self];  
   
-  // TODO: add properties to FriendsViewController.h and .m, e.g. an array or dictionary of friends
-  //NSArray* friendData = [NSArray arrayWithObject:[facebook requestWithGraphPath:@"me/friends" andDelegate:self]];
+}
 
-  
+- (void) request:(FBRequest *)request didLoad:(id)result {
+  NSMutableDictionary *friendData = [[NSMutableDictionary alloc] initWithDictionary:result];
+
   [self.navigationController setNavigationBarHidden:NO animated:YES];
   FriendsViewController *controller = [[FriendsViewController alloc] initWithNibName:@"FriendsViewController" bundle:nil];
-  // TODO: set the controller property here = the data you get from FB
-  //controller.friendData = friendData;
+  // set the controller friendData = the data FB returns
+  controller.friendData = friendData;
   [self.navigationController pushViewController:controller animated:YES];
-
   
+}
+
+-(void) request:(FBRequest *)request didFailWithError:(NSError *)error {
+    NSLog(@"error: %@", error);
 }
 
 

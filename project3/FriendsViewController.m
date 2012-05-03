@@ -66,15 +66,8 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-  
-  // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   self.title = @"Choose a Friend";
   
-  //NSLog(@"friend data %n", self.friendData);
 }
 
 - (void)viewDidUnload
@@ -112,7 +105,9 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
   // TODO: fill in data for cell.textLabel.text (name) and cell.textLabel.tag (userId)
-  cell.textLabel.text = @"Hello";
+  NSString *name = [[NSString alloc] initWithString:[[[self.friendData objectForKey:@"data"] objectAtIndex:indexPath.row] objectForKey:@"name"]];
+  //cell.textLabel.text = [[[self.friendData objectForKey:@"data"] objectAtIndex:indexPath.row] objectForKey:@"Name"];
+  cell.textLabel.text = name;
   return cell;
 }
 
