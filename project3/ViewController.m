@@ -18,9 +18,40 @@
 
 @end
 
+@interface NSArray(JSONCategories)
++(NSArray*)arrayWithContentsOfJSONURLString:
+(NSString*)urlAddress;
+-(NSData*)toJSON;
+@end
+@implementation NSArray(JSONCategories)
++(NSArray*)arrayWithContentsOfJSONURLString:
+(NSString*)urlAddress
+{
+  NSData* data = [NSData dataWithContentsOfURL:
+                  [NSURL URLWithString: urlAddress] ];
+  
+  
+  __autoreleasing NSError* error = nil;
+  id result = [NSJSONSerialization JSONObjectWithData:data 
+                                              options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  return result;
+}
+
+-(NSData*)toJSON
+{
+  NSError* error = nil;
+  id result = [NSJSONSerialization dataWithJSONObject:self 
+                                              options:kNilOptions error:&error];
+  if (error != nil) return nil;
+  return result;    
+}
+@end
 @implementation ViewController
 
 @synthesize tableView = _tableView;
+@synthesize theirs = _theirs;
+@synthesize mine = _mine;
 @synthesize facebook;
 
 - (void)viewDidLoad {
@@ -29,6 +60,41 @@
   [self.navigationController setNavigationBarHidden:YES animated:YES];
   GameSingleton *gameSingleton = [GameSingleton getInstance];
   [gameSingleton reset];
+  
+  
+  // get NSArray of outstanding stories from JSON API call
+  NSString *requestString = [[NSString alloc] initWithFormat:@"userId=%d",1];
+  NSData *requestData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
+  NSURL *url = [NSURL URLWithString:@"http://six6.ca/friendlibs_api/index.php/main/getStoriesOutstanding"];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+  
+  [request setHTTPMethod:@"POST"];
+  [request setValue:@"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" forHTTPHeaderField:@"Accept"];
+  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+  [request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+  [request setHTTPBody: requestData];
+  
+  (void) [[NSURLConnection alloc] initWithRequest:request delegate:self];
+  
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+  
+  NSMutableArray *theirs = [[NSMutableArray alloc] init];
+  NSError* error = nil;
+  
+  theirs = [NSJSONSerialization JSONObjectWithData:data 
+                                                   options:NSJSONReadingMutableContainers error:&error];
+  if (theirs == nil) {
+    NSLog(@"error: %@", error);
+  }
+  else {
+    NSLog(@"nothing wrong");
+    self.theirs = theirs;
+    [self.tableView reloadData];
+
+  }
+  
 }
 
 - (void)viewDidUnload {
@@ -93,7 +159,7 @@
       
     case 1:
       // TODO: call webservice API to get number of array of outstanding stories then return this number
-      return 2;
+      return [self.theirs count];
     default:
       return 0;
   }
@@ -140,7 +206,8 @@
     return cell;    
   }
   else {
-    cell.textLabel.text = @"second section!";
+    cell.textLabel.text = [[self.theirs objectAtIndex:indexPath.row] objectForKey:@"Name"];
+    //cell.textLabel.text = @"second section!";
     return cell;    
   }
 

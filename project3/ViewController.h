@@ -13,8 +13,10 @@
   Facebook *facebook;
 }
 
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) Facebook *facebook;
+@property (nonatomic, strong) NSArray *mine;
+@property (nonatomic, strong) NSArray *theirs;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)startGame:(id)sender;
 
 @end
